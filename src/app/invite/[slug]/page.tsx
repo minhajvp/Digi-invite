@@ -3,6 +3,8 @@ import dbConnect from '@/lib/mongodb';
 import Invitation from '@/models/Invitation';
 import TemplateRenderer from '@/components/templates/TemplateRenderer';
 
+export const dynamic = 'force-dynamic';
+
 export default async function InvitePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   

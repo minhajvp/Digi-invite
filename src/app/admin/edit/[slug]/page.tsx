@@ -7,6 +7,8 @@ import LivePreview from '@/components/admin/LivePreview';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default async function EditInvitation({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   await dbConnect();

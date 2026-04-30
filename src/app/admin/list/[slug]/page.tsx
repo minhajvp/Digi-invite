@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Calendar, MapPin, Users, Heart, Clock, ArrowLeft } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function InvitationDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   await dbConnect();

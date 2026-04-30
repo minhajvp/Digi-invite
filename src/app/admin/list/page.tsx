@@ -4,6 +4,8 @@ import Invitation from '@/models/Invitation';
 import Link from 'next/link';
 import InvitationListRow from '@/components/admin/InvitationListRow';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminList() {
   await dbConnect();
   // Fetch invitations and convert to plain objects for client component
