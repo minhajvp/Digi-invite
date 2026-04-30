@@ -10,19 +10,30 @@ interface Props {
   data: any;
 }
 
-export default function CombinedTemplate1({ data }: Props) {
-  const formatTime = (time: string) => {
-    if (!time) return '';
-    try {
-      const [hours, minutes] = time.split(':');
-      let h = parseInt(hours);
-      const m = minutes || '00';
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      h = h % 12;
-      h = h ? h : 12;
-      return `${h}:${m} ${ampm}`;
     } catch (e) {
       return time;
+    }
+  };
+
+  const formatDate = (date: string) => {
+    if (!date) return '';
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(date)) return date;
+    try {
+      if (date.includes('-')) {
+        const parts = date.split('-');
+        if (parts.length === 3) {
+          const [y, m, d] = parts;
+          return `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${y}`;
+        }
+      }
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return date;
+      const day = d.getDate().toString().padStart(2, '0');
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    } catch (e) {
+      return date;
     }
   };
 
@@ -151,7 +162,7 @@ export default function CombinedTemplate1({ data }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="space-y-4">
               <Calendar className="mx-auto text-amber-500" size={28} />
-              <p className="text-3xl font-serif">{eventDate}</p>
+              <p className="text-3xl font-serif">{formatDate(eventDate)}</p>
             </div>
             <div className="space-y-4">
               <Clock className="mx-auto text-amber-500" size={28} />

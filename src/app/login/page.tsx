@@ -104,7 +104,7 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-8 text-center text-slate-400 text-xs">
-          Secure access for Digi Invitation administrators.
+          Secure access for Diginvite administrators.
         </p>
       </motion.div>
     </div>

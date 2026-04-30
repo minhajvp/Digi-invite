@@ -18,7 +18,7 @@ export default function Sidebar() {
         <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center font-bold text-white shrink-0 shadow-lg shadow-indigo-500/30">
           DI
         </div>
-        <span className="ml-3 font-semibold text-white hidden lg:block tracking-wide">DigiInvite</span>
+        <span className="ml-3 font-semibold text-white hidden lg:block tracking-wide">Diginvite</span>
       </div>
 
       <nav className="flex-1 py-6 space-y-2 px-3">

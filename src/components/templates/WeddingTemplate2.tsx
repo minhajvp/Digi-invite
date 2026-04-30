@@ -28,6 +28,28 @@ export default function WeddingTemplate2({ data }: Props) {
     }
   };
 
+  const formatDate = (date: string) => {
+    if (!date) return '';
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(date)) return date;
+    try {
+      if (date.includes('-')) {
+        const parts = date.split('-');
+        if (parts.length === 3) {
+          const [y, m, d] = parts;
+          return `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${y}`;
+        }
+      }
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return date;
+      const day = d.getDate().toString().padStart(2, '0');
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    } catch (e) {
+      return date;
+    }
+  };
+
   const {
     eventSubHead = 'You are invited to celebrate',
     brideName = 'Bride',
@@ -204,7 +226,7 @@ export default function WeddingTemplate2({ data }: Props) {
             
             <div className="mb-8">
               <p className="font-cinzel text-sm text-rose-400 tracking-[0.2em] uppercase mb-2">Date</p>
-              <p className="font-cinzel text-2xl text-slate-800">{eventDate}</p>
+              <p className="font-cinzel text-2xl text-slate-800">{formatDate(eventDate)}</p>
               <p className="font-cinzel text-slate-500 mt-1">{formatTime(eventTime)}</p>
             </div>
             

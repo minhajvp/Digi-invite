@@ -28,6 +28,28 @@ export default function WeddingTemplate3({ data }: Props) {
     }
   };
 
+  const formatDate = (date: string) => {
+    if (!date) return '';
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(date)) return date;
+    try {
+      if (date.includes('-')) {
+        const parts = date.split('-');
+        if (parts.length === 3) {
+          const [y, m, d] = parts;
+          return `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${y}`;
+        }
+      }
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return date;
+      const day = d.getDate().toString().padStart(2, '0');
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    } catch (e) {
+      return date;
+    }
+  };
+
   const {
     eventSubHead = 'Join us for a magical evening',
     brideName = 'Bride',
@@ -124,7 +146,7 @@ export default function WeddingTemplate3({ data }: Props) {
             className="mt-6 md:mt-12 flex items-center justify-center gap-4 text-emerald-100 w-full"
           >
             <div className="hidden sm:block w-12 h-px bg-emerald-500/50"></div>
-            <p className="tracking-widest uppercase text-xs font-light truncate px-2">{eventDate}</p>
+            <p className="tracking-widest uppercase text-xs font-light truncate px-2">{formatDate(eventDate)}</p>
             <div className="hidden sm:block w-12 h-px bg-emerald-500/50"></div>
           </motion.div>
         </motion.div>
@@ -209,7 +231,7 @@ export default function WeddingTemplate3({ data }: Props) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
               <div className="flex flex-col items-center">
                 <p className="text-emerald-500 tracking-[0.2em] text-xs uppercase mb-4">When</p>
-                <p className="font-cormorant text-2xl text-emerald-50 mb-2">{eventDate}</p>
+                <p className="font-cormorant text-2xl text-emerald-50 mb-2">{formatDate(eventDate)}</p>
                 <p className="text-emerald-200/60 font-light">{formatTime(eventTime)}</p>
               </div>
               

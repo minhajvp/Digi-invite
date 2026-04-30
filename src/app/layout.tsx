@@ -12,8 +12,8 @@ const cormorant = Cormorant_Garamond({ weight: ["300", "400", "500", "600", "700
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
 
 export const metadata: Metadata = {
-  title: "Digital Event Invitations",
-  description: "Premium digital invitations for your special events.",
+  title: "Diginvite | Premium Digital Invitations",
+  description: "Create stunning digital invitations for your special events with Diginvite.",
 };
 
 export default function RootLayout({

@@ -28,6 +28,28 @@ export default function WeddingTemplate1({ data }: Props) {
     }
   };
 
+  const formatDate = (date: string) => {
+    if (!date) return '';
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(date)) return date;
+    try {
+      if (date.includes('-')) {
+        const parts = date.split('-');
+        if (parts.length === 3) {
+          const [y, m, d] = parts;
+          return `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${y}`;
+        }
+      }
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return date;
+      const day = d.getDate().toString().padStart(2, '0');
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    } catch (e) {
+      return date;
+    }
+  };
+
   const {
     eventSubHead = 'Together with their families',
     brideName = 'Bride',
@@ -186,7 +208,7 @@ export default function WeddingTemplate1({ data }: Props) {
             
             <div className="relative z-10">
               <p className="text-amber-400 uppercase tracking-widest text-xs font-sans mb-3">When</p>
-              <p className="text-2xl mb-1">{eventDate}</p>
+              <p className="text-2xl mb-1">{formatDate(eventDate)}</p>
               <p className="text-base text-zinc-400 mb-10">{formatTime(eventTime)}</p>
               
               <p className="text-amber-400 uppercase tracking-widest text-xs font-sans mb-3">Where</p>

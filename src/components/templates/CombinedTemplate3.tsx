@@ -36,6 +36,26 @@ export default function CombinedTemplate3({ data }: Props) {
     } catch (e) {
       return time;
     }
+  const formatDate = (date: string) => {
+    if (!date) return '';
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(date)) return date;
+    try {
+      if (date.includes('-')) {
+        const parts = date.split('-');
+        if (parts.length === 3) {
+          const [y, m, d] = parts;
+          return `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${y}`;
+        }
+      }
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return date;
+      const day = d.getDate().toString().padStart(2, '0');
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    } catch (e) {
+      return date;
+    }
   };
 
   if (!data) return <div className="p-20 text-center">Loading invitation...</div>;
@@ -253,7 +273,7 @@ export default function CombinedTemplate3({ data }: Props) {
              >
                 <div className="space-y-4">
                    <Calendar className="mx-auto text-slate-200" size={32} />
-                   <p className="font-cinzel text-2xl text-slate-900 tracking-tighter">{eventDate}</p>
+                   <p className="font-cinzel text-2xl text-slate-900 tracking-tighter">{formatDate(eventDate)}</p>
                    <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">Mark the Date</p>
                 </div>
                 
