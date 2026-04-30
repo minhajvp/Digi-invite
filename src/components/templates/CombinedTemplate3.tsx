@@ -36,6 +36,8 @@ export default function CombinedTemplate3({ data }: Props) {
     } catch (e) {
       return time;
     }
+  };
+
   const formatDate = (date: string) => {
     if (!date) return '';
     if (/^\d{2}\/\d{2}\/\d{4}$/.test(date)) return date;

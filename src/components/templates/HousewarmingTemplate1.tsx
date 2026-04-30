@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, Clock, Home, Users } from 'lucide-react';
+import { MapPin, Calendar, Clock, Home, Users, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import MusicPlayer from './MusicPlayer';
 import RSVPModal from './RSVPModal';
@@ -10,6 +10,17 @@ interface Props {
   data: any;
 }
 
+export default function HousewarmingTemplate1({ data }: Props) {
+  const formatTime = (time: string) => {
+    if (!time) return '';
+    try {
+      const [hours, minutes] = time.split(':');
+      let h = parseInt(hours);
+      const m = minutes || '00';
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12;
+      h = h ? h : 12;
+      return `${h}:${m} ${ampm}`;
     } catch (e) {
       return time;
     }
