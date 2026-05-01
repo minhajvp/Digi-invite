@@ -6,41 +6,38 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function MusicPlayer({ url, brideName, groomName, primarySide }: { url?: string; brideName?: string; groomName?: string; primarySide?: 'bride' | 'groom' }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
+  const [error, setError] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (url) {
-      audioRef.current = new Audio(url);
-      audioRef.current.loop = true;
-    }
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
+    setIsPlaying(false);
+    setError(false);
   }, [url]);
 
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play().catch(() => {
-          // Ignore play errors (e.g. invalid blob URLs from past sessions)
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(err => {
+          console.error("Playback failed:", err);
+          setError(true);
         });
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
   const startInteraction = () => {
     setShowOverlay(false);
     if (audioRef.current) {
-      audioRef.current.play().catch(() => {
-        // Ignore play errors
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(err => {
+        console.error("Autoplay failed:", err);
       });
-      setIsPlaying(true);
     }
   };
 
@@ -48,6 +45,16 @@ export default function MusicPlayer({ url, brideName, groomName, primarySide }: 
 
   return (
     <>
+      <audio 
+        ref={audioRef}
+        src={url}
+        loop
+        preload="auto"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onError={() => setError(true)}
+      />
+
       <AnimatePresence>
         {showOverlay && (
           <motion.div 
@@ -78,7 +85,11 @@ export default function MusicPlayer({ url, brideName, groomName, primarySide }: 
         onClick={togglePlay}
         className="fixed bottom-6 right-6 z-40 w-12 h-12 bg-zinc-900/80 backdrop-blur border border-amber-900/50 rounded-full flex items-center justify-center text-amber-400 shadow-lg"
       >
-        {isPlaying ? <Volume2 size={20} /> : <VolumeX size={20} />}
+        {error ? (
+          <VolumeX size={20} className="text-red-400" />
+        ) : (
+          isPlaying ? <Volume2 size={20} /> : <VolumeX size={20} />
+        )}
       </button>
     </>
   );

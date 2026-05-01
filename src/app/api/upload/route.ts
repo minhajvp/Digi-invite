@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { put } from '@vercel/blob';
 
 export async function POST(req: Request) {
   try {
@@ -11,6 +12,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
+    // Check if we are on Vercel or have Blob token configured
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+    
+    if (blobToken) {
+      // Use Vercel Blob for production
+      const blob = await put(file.name, file, {
+        access: 'public',
+        token: blobToken
+      });
+      return NextResponse.json({ url: blob.url });
+    }
+
+    // Fallback to local filesystem for development
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(new Uint8Array(bytes));
 
@@ -20,11 +34,12 @@ export async function POST(req: Request) {
     try {
       await fs.access(uploadDir);
     } catch {
+      // This will fail on Vercel production, which is expected if token is missing
       await fs.mkdir(uploadDir, { recursive: true });
     }
 
     // Create unique filename
-    const originalName = 'name' in file ? file.name : 'image.jpg';
+    const originalName = file.name || 'file.jpg';
     const ext = originalName.split('.').pop() || 'jpg';
     const filename = `${Date.now()}-${Math.round(Math.random() * 1E9)}.${ext}`;
     const filepath = path.join(uploadDir, filename);
@@ -34,6 +49,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: `/uploads/${filename}` });
   } catch (error) {
     console.error('Upload Error:', error);
-    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to upload file. If hosting on Vercel, ensure BLOB_READ_WRITE_TOKEN is configured.' }, { status: 500 });
   }
 }
