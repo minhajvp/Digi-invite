@@ -12,11 +12,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Check if we are on Vercel or have Blob token configured
     const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
     
     if (blobToken) {
-      // Use Vercel Blob for production
       const blob = await put(file.name, file, {
         access: 'public',
         token: blobToken
@@ -30,25 +28,24 @@ export async function POST(req: Request) {
 
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');
     
-    // Ensure directory exists
     try {
       await fs.access(uploadDir);
     } catch {
-      // This will fail on Vercel production, which is expected if token is missing
       await fs.mkdir(uploadDir, { recursive: true });
     }
 
-    // Create unique filename
-    const originalName = file.name || 'file.jpg';
-    const ext = originalName.split('.').pop() || 'jpg';
+    const originalName = file.name || 'file.mp3';
+    const ext = originalName.split('.').pop() || 'mp3';
     const filename = `${Date.now()}-${Math.round(Math.random() * 1E9)}.${ext}`;
     const filepath = path.join(uploadDir, filename);
     
     await fs.writeFile(filepath, buffer);
 
     return NextResponse.json({ url: `/uploads/${filename}` });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload Error:', error);
-    return NextResponse.json({ error: 'Failed to upload file. If hosting on Vercel, ensure BLOB_READ_WRITE_TOKEN is configured.' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Failed to upload file. ' + (error.message || '')
+    }, { status: 500 });
   }
 }

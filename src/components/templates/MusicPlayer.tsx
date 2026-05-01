@@ -12,6 +12,10 @@ export default function MusicPlayer({ url, brideName, groomName, primarySide }: 
   useEffect(() => {
     setIsPlaying(false);
     setError(false);
+    if (audioRef.current) {
+      audioRef.current.volume = 1;
+      audioRef.current.muted = false;
+    }
   }, [url]);
 
   const togglePlay = () => {
@@ -46,13 +50,19 @@ export default function MusicPlayer({ url, brideName, groomName, primarySide }: 
   return (
     <>
       <audio 
+        key={url}
         ref={audioRef}
         src={url}
+        crossOrigin="anonymous"
         loop
         preload="auto"
+        muted={false}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
-        onError={() => setError(true)}
+        onError={(e) => {
+          console.error("MusicPlayer: Audio error", e);
+          setError(true);
+        }}
       />
 
       <AnimatePresence>

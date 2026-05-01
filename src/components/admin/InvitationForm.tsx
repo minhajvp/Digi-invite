@@ -59,9 +59,14 @@ export default function InvitationForm({ initialData }: Props) {
       try {
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
         const data = await res.json();
-        if (data.url) updateField('musicUrl', data.url);
-      } catch (err) {
+        if (data.url) {
+          updateField('musicUrl', data.url);
+        } else if (data.error) {
+          setError('Audio upload failed: ' + data.error);
+        }
+      } catch (err: any) {
         console.error('Audio upload failed', err);
+        setError('Audio upload failed: ' + err.message);
       }
       setIsUploadingAudio(false);
     }
@@ -178,7 +183,19 @@ export default function InvitationForm({ initialData }: Props) {
             <Label className="flex items-center gap-2">
               Background Audio {isUploadingAudio && <Loader2 size={14} className="animate-spin text-indigo-600" />}
             </Label>
-            <Input type="file" accept="audio/*" onChange={handleAudioUpload} disabled={isUploadingAudio} />
+            <div className="flex gap-2">
+              <Input type="file" accept="audio/*" onChange={handleAudioUpload} disabled={isUploadingAudio} className="flex-1" />
+              <div className="flex-1">
+                <Input 
+                  type="text" 
+                  placeholder="Or paste audio URL..." 
+                  value={store.musicUrl || ''} 
+                  onChange={(e) => updateField('musicUrl', e.target.value)}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            {store.musicUrl && <p className="text-[10px] text-slate-500 mt-1 truncate">Current: {store.musicUrl}</p>}
           </div>
         </div>
       </div>
