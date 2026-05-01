@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 
 interface Props {
   isOpen: boolean;
@@ -134,9 +134,14 @@ export default function RSVPModal({ isOpen, onClose, invitationId }: Props) {
                   <button 
                     disabled={attending === null || isSubmitting}
                     type="submit" 
-                    className="w-full bg-amber-600 hover:bg-amber-500 text-zinc-950 py-4 rounded-lg font-bold tracking-widest uppercase text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full bg-amber-600 hover:bg-amber-500 text-zinc-950 py-4 rounded-lg font-bold tracking-widest uppercase text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                   >
-                    {isSubmitting ? 'Submitting...' : 'Confirm Presence'}
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" />
+                        Processing...
+                      </>
+                    ) : 'Confirm Presence'}
                   </button>
                 </form>
               </>

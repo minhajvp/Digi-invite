@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useInvitationStore } from '@/store/useInvitationStore';
 import { Input, Label, Textarea } from './ui/Input';
+import { Loader2, Upload } from 'lucide-react';
 
 interface Props {
   initialData?: any;
@@ -14,6 +15,8 @@ export default function InvitationForm({ initialData }: Props) {
   } = store;
 
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadingAudio, setIsUploadingAudio] = useState(false);
   const [publishedUrl, setPublishedUrl] = useState('');
   const [error, setError] = useState('');
 
@@ -33,6 +36,7 @@ export default function InvitationForm({ initialData }: Props) {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setIsUploadingImage(true);
       const formData = new FormData();
       formData.append('file', file);
       try {
@@ -42,12 +46,14 @@ export default function InvitationForm({ initialData }: Props) {
       } catch (err) {
         console.error('Image upload failed', err);
       }
+      setIsUploadingImage(false);
     }
   };
 
   const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setIsUploadingAudio(true);
       const formData = new FormData();
       formData.append('file', file);
       try {
@@ -57,6 +63,7 @@ export default function InvitationForm({ initialData }: Props) {
       } catch (err) {
         console.error('Audio upload failed', err);
       }
+      setIsUploadingAudio(false);
     }
   };
 
@@ -149,12 +156,16 @@ export default function InvitationForm({ initialData }: Props) {
         <h2 className="text-xl font-semibold mb-4 text-slate-800">Media</h2>
         <div className="space-y-4">
           <div>
-            <Label>Cover Image</Label>
-            <Input type="file" accept="image/*" onChange={handleImageUpload} />
+            <Label className="flex items-center gap-2">
+              Cover Image {isUploadingImage && <Loader2 size={14} className="animate-spin text-indigo-600" />}
+            </Label>
+            <Input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploadingImage} />
           </div>
           <div>
-            <Label>Background Audio</Label>
-            <Input type="file" accept="audio/*" onChange={handleAudioUpload} />
+            <Label className="flex items-center gap-2">
+              Background Audio {isUploadingAudio && <Loader2 size={14} className="animate-spin text-indigo-600" />}
+            </Label>
+            <Input type="file" accept="audio/*" onChange={handleAudioUpload} disabled={isUploadingAudio} />
           </div>
         </div>
       </div>
@@ -291,9 +302,16 @@ export default function InvitationForm({ initialData }: Props) {
         <button 
           onClick={handlePublish}
           disabled={isPublishing}
-          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 disabled:opacity-50"
+          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 disabled:opacity-50 flex items-center gap-2"
         >
-          {isPublishing ? (initialData ? 'Updating...' : 'Publishing...') : (initialData ? 'Update Invitation' : 'Publish Invitation')}
+          {isPublishing ? (
+            <>
+              <Loader2 size={18} className="animate-spin" />
+              {initialData ? 'Updating...' : 'Publishing...'}
+            </>
+          ) : (
+            initialData ? 'Update Invitation' : 'Publish Invitation'
+          )}
         </button>
       </div>
     </div>
