@@ -89,7 +89,7 @@ export default function WeddingTemplate3({ data }: Props) {
       {/* 3D Floating Petals/Leaves */}
       <FloatingPetals count={30} colors={['#059669', '#10b981', '#fbbf24', '#f59e0b']} />
 
-      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} />
+      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} primarySide={data.primarySide} />
       <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} invitationId={data._id?.toString()} />
 
       {/* Hero Section */}
@@ -130,13 +130,13 @@ export default function WeddingTemplate3({ data }: Props) {
           </motion.div>
 
           <h1 className="font-cormorant text-7xl sm:text-7xl md:text-9xl lg:text-10xl text-amber-300/90 font-medium mb-2 md:mb-4 drop-shadow-2xl break-words max-w-full px-2 leading-tight">
-            {brideName.split(' ')[0]}
+            {data.primarySide === 'groom' ? groomName.split(' ')[0] : brideName.split(' ')[0]}
           </h1>
           <span className="font-cormorant text-2xl md:text-3xl text-emerald-500 italic my-1 md:my-2">
             &
           </span>
           <h1 className="font-cormorant text-7xl sm:text-7xl md:text-9xl lg:text-10xl text-amber-300/90 font-medium mt-2 md:mt-4 drop-shadow-2xl break-words max-w-full px-2 leading-tight">
-            {groomName.split(' ')[0]}
+            {data.primarySide === 'groom' ? brideName.split(' ')[0] : groomName.split(' ')[0]}
           </h1>
           
           <motion.div 
@@ -171,35 +171,71 @@ export default function WeddingTemplate3({ data }: Props) {
 
         {/* The Couple Details */}
         <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mb-12 md:mb-32 overflow-hidden px-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1 }}
-            className="text-center pb-8 md:pb-0 flex flex-col items-center w-full"
-          >
-            <h2 className="font-pinyon text-5xl md:text-6xl text-amber-300 mb-6 font-normal tracking-wide break-words w-full px-2 leading-tight">{brideName}</h2>
-            <div className="text-emerald-100/90 text-lg md:text-xl font-cormorant leading-relaxed w-full">
-              {brideFatherName && brideMotherName && <p className="uppercase tracking-[0.2em] text-[10px] text-emerald-500/60 mb-2">Daughter of</p>}
-              {brideFatherName && brideMotherName && <p className="text-2xl italic">{brideFatherName} & {brideMotherName}</p>}
-              {brideAddress && <p className="mt-6 text-emerald-200/40 text-[11px] uppercase tracking-[0.2em] max-w-[280px] mx-auto leading-loose break-words">{brideAddress}</p>}
-            </div>
-          </motion.div>
+          {data.primarySide === 'groom' ? (
+            <>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1 }}
+                className="text-center pb-8 md:pb-0 flex flex-col items-center w-full"
+              >
+                <h2 className="font-pinyon text-5xl md:text-6xl text-amber-300 mb-6 font-normal tracking-wide break-words w-full px-2 leading-tight">{groomName}</h2>
+                <div className="text-emerald-100/90 text-lg md:text-xl font-cormorant leading-relaxed w-full">
+                  {groomFatherName && groomMotherName && <p className="uppercase tracking-[0.2em] text-[10px] text-emerald-500/60 mb-2">Son of</p>}
+                  {groomFatherName && groomMotherName && <p className="text-2xl italic">{groomFatherName} & {groomMotherName}</p>}
+                  {groomAddress && <p className="mt-6 text-emerald-200/40 text-[11px] uppercase tracking-[0.2em] max-w-[280px] mx-auto leading-loose break-words">{groomAddress}</p>}
+                </div>
+              </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="text-center pb-8 md:pb-0 flex flex-col items-center w-full"
-          >
-            <h2 className="font-pinyon text-5xl md:text-6xl text-amber-300 mb-6 font-normal tracking-wide break-words w-full px-2 leading-tight">{groomName}</h2>
-            <div className="text-emerald-100/90 text-lg md:text-xl font-cormorant leading-relaxed w-full">
-              {groomFatherName && groomMotherName && <p className="uppercase tracking-[0.2em] text-[10px] text-emerald-500/60 mb-2">Son of</p>}
-              {groomFatherName && groomMotherName && <p className="text-2xl italic">{groomFatherName} & {groomMotherName}</p>}
-              {groomAddress && <p className="mt-6 text-emerald-200/40 text-[11px] uppercase tracking-[0.2em] max-w-[280px] mx-auto leading-loose break-words">{groomAddress}</p>}
-            </div>
-          </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1, delay: 0.2 }}
+                className="text-center pb-8 md:pb-0 flex flex-col items-center w-full"
+              >
+                <h2 className="font-pinyon text-5xl md:text-6xl text-amber-300 mb-6 font-normal tracking-wide break-words w-full px-2 leading-tight">{brideName}</h2>
+                <div className="text-emerald-100/90 text-lg md:text-xl font-cormorant leading-relaxed w-full">
+                  {brideFatherName && brideMotherName && <p className="uppercase tracking-[0.2em] text-[10px] text-emerald-500/60 mb-2">Daughter of</p>}
+                  {brideFatherName && brideMotherName && <p className="text-2xl italic">{brideFatherName} & {brideMotherName}</p>}
+                  {brideAddress && <p className="mt-6 text-emerald-200/40 text-[11px] uppercase tracking-[0.2em] max-w-[280px] mx-auto leading-loose break-words">{brideAddress}</p>}
+                </div>
+              </motion.div>
+            </>
+          ) : (
+            <>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1 }}
+                className="text-center pb-8 md:pb-0 flex flex-col items-center w-full"
+              >
+                <h2 className="font-pinyon text-5xl md:text-6xl text-amber-300 mb-6 font-normal tracking-wide break-words w-full px-2 leading-tight">{brideName}</h2>
+                <div className="text-emerald-100/90 text-lg md:text-xl font-cormorant leading-relaxed w-full">
+                  {brideFatherName && brideMotherName && <p className="uppercase tracking-[0.2em] text-[10px] text-emerald-500/60 mb-2">Daughter of</p>}
+                  {brideFatherName && brideMotherName && <p className="text-2xl italic">{brideFatherName} & {brideMotherName}</p>}
+                  {brideAddress && <p className="mt-6 text-emerald-200/40 text-[11px] uppercase tracking-[0.2em] max-w-[280px] mx-auto leading-loose break-words">{brideAddress}</p>}
+                </div>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1, delay: 0.2 }}
+                className="text-center pb-8 md:pb-0 flex flex-col items-center w-full"
+              >
+                <h2 className="font-pinyon text-5xl md:text-6xl text-amber-300 mb-6 font-normal tracking-wide break-words w-full px-2 leading-tight">{groomName}</h2>
+                <div className="text-emerald-100/90 text-lg md:text-xl font-cormorant leading-relaxed w-full">
+                  {groomFatherName && groomMotherName && <p className="uppercase tracking-[0.2em] text-[10px] text-emerald-500/60 mb-2">Son of</p>}
+                  {groomFatherName && groomMotherName && <p className="text-2xl italic">{groomFatherName} & {groomMotherName}</p>}
+                  {groomAddress && <p className="mt-6 text-emerald-200/40 text-[11px] uppercase tracking-[0.2em] max-w-[280px] mx-auto leading-loose break-words">{groomAddress}</p>}
+                </div>
+              </motion.div>
+            </>
+          )}
         </div>
 
         {familyAddress && (

@@ -100,7 +100,7 @@ export default function CombinedTemplate3({ data }: Props) {
       {/* Unique Floating Petals/Bokeh Effect */}
       <FloatingEffect count={20} />
       
-      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} />
+      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} primarySide={data.primarySide} />
       <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} invitationId={data._id?.toString() || ''} />
 
       {/* Hero Section with Parallax Reveal */}
@@ -125,7 +125,7 @@ export default function CombinedTemplate3({ data }: Props) {
           </motion.div>
           
           <h1 className="font-pinyon text-5xl md:text-[7rem] lg:text-[8rem] text-slate-900 leading-tight drop-shadow-sm px-4">
-            {brideName}
+            {data.primarySide === 'groom' ? groomName : brideName}
           </h1>
           <motion.div 
             initial={{ opacity: 0, scale: 0.5 }}
@@ -138,7 +138,7 @@ export default function CombinedTemplate3({ data }: Props) {
             <div className="w-12 h-px bg-slate-200" />
           </motion.div>
           <h1 className="font-pinyon text-5xl md:text-[7rem] lg:text-[8rem] text-slate-900 leading-tight drop-shadow-sm px-4">
-            {groomName}
+            {data.primarySide === 'groom' ? brideName : groomName}
           </h1>
           
           <motion.div 
@@ -209,33 +209,67 @@ export default function CombinedTemplate3({ data }: Props) {
                 <div className="relative z-10 text-center">
                   <h3 className="font-cinzel text-xs tracking-[0.5em] text-slate-400 mb-16 uppercase">The Ceremony of Love</h3>
                   <div className="space-y-10">
-                    <div>
-                       <p className="font-pinyon text-6xl text-slate-800">{brideName}</p>
-                       {brideFatherName && brideMotherName && (
-                         <p className="font-cinzel text-[10px] uppercase tracking-[0.2em] text-slate-800 mt-4 leading-relaxed">
-                           Daughter of <br/> {brideFatherName} & {brideMotherName}
-                         </p>
-                       )}
-                       {brideAddress && (
-                         <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.1em] text-slate-400 mt-4 max-w-[250px] mx-auto leading-relaxed break-words">
-                           {brideAddress}
-                         </p>
-                       )}
-                    </div>
-                    <div className="text-slate-100 font-serif text-4xl italic text-center">with</div>
-                    <div>
-                       <p className="font-pinyon text-6xl text-slate-800 text-center">{groomName}</p>
-                       {groomFatherName && groomMotherName && (
-                         <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.2em] text-slate-800 mt-4 leading-relaxed">
-                           Son of <br/> {groomFatherName} & {groomMotherName}
-                         </p>
-                       )}
-                       {groomAddress && (
-                         <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.1em] text-slate-400 mt-4 max-w-[250px] mx-auto leading-relaxed break-words">
-                           {groomAddress}
-                         </p>
-                       )}
-                    </div>
+                    {data.primarySide === 'groom' ? (
+                      <>
+                        <div>
+                          <p className="font-pinyon text-6xl text-slate-800">{groomName}</p>
+                          {groomFatherName && groomMotherName && (
+                            <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.2em] text-slate-800 mt-4 leading-relaxed">
+                              Son of <br/> {groomFatherName} & {groomMotherName}
+                            </p>
+                          )}
+                          {groomAddress && (
+                            <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.1em] text-slate-400 mt-4 max-w-[250px] mx-auto leading-relaxed break-words">
+                              {groomAddress}
+                            </p>
+                          )}
+                        </div>
+                        <div className="text-slate-100 font-serif text-4xl italic text-center">with</div>
+                        <div>
+                          <p className="font-pinyon text-6xl text-slate-800">{brideName}</p>
+                          {brideFatherName && brideMotherName && (
+                            <p className="font-cinzel text-[10px] uppercase tracking-[0.2em] text-slate-800 mt-4 leading-relaxed">
+                              Daughter of <br/> {brideFatherName} & {brideMotherName}
+                            </p>
+                          )}
+                          {brideAddress && (
+                            <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.1em] text-slate-400 mt-4 max-w-[250px] mx-auto leading-relaxed break-words">
+                              {brideAddress}
+                            </p>
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <p className="font-pinyon text-6xl text-slate-800">{brideName}</p>
+                          {brideFatherName && brideMotherName && (
+                            <p className="font-cinzel text-[10px] uppercase tracking-[0.2em] text-slate-800 mt-4 leading-relaxed">
+                              Daughter of <br/> {brideFatherName} & {brideMotherName}
+                            </p>
+                          )}
+                          {brideAddress && (
+                            <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.1em] text-slate-400 mt-4 max-w-[250px] mx-auto leading-relaxed break-words">
+                              {brideAddress}
+                            </p>
+                          )}
+                        </div>
+                        <div className="text-slate-100 font-serif text-4xl italic text-center">with</div>
+                        <div>
+                          <p className="font-pinyon text-6xl text-slate-800 text-center">{groomName}</p>
+                          {groomFatherName && groomMotherName && (
+                            <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.2em] text-slate-800 mt-4 leading-relaxed">
+                              Son of <br/> {groomFatherName} & {groomMotherName}
+                            </p>
+                          )}
+                          {groomAddress && (
+                            <p className="font-cinzel text-[10px] text-center uppercase tracking-[0.1em] text-slate-400 mt-4 max-w-[250px] mx-auto leading-relaxed break-words">
+                              {groomAddress}
+                            </p>
+                          )}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
              </motion.div>

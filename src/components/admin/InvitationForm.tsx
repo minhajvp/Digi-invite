@@ -149,6 +149,19 @@ export default function InvitationForm({ initialData }: Props) {
               )}
             </select>
           </div>
+          {(eventType === 'wedding' || eventType === 'both') && (
+            <div>
+              <Label>Primary Side (Host Family)</Label>
+              <select 
+                value={store.primarySide || 'bride'} 
+                onChange={(e) => updateField('primarySide', e.target.value)}
+                className="w-full mt-1 border-gray-300 rounded-md shadow-sm p-2 border text-slate-800"
+              >
+                <option value="bride">Bride's Family (Bride First)</option>
+                <option value="groom">Groom's Family (Groom First)</option>
+              </select>
+            </div>
+          )}
         </div>
       </div>
 

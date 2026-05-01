@@ -106,7 +106,7 @@ export default function WeddingTemplate1({ data }: Props) {
         <FloatingRings />
       </div>
 
-      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} />
+      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} primarySide={data.primarySide} />
       <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} invitationId={data._id?.toString()} />
 
       {/* Content Container */}
@@ -123,43 +123,87 @@ export default function WeddingTemplate1({ data }: Props) {
             {eventSubHead}
           </p>
 
-          {/* Bride Details */}
-          <motion.div variants={scrollFade} className="mb-8 md:mb-16">
-            <h1 className="font-pinyon text-7xl sm:text-6xl md:text-7xl text-amber-400 mb-4 drop-shadow-md break-words w-full px-4 leading-tight">
-              {brideName}
-            </h1>
-            <p className="text-sm text-zinc-400 font-sans tracking-widest uppercase mb-2">D/O</p>
-            {brideFatherName && brideMotherName && <p className="text-base font-light text-zinc-200">{brideFatherName} & {brideMotherName}</p>}
-            {brideAddress && <p className="text-sm font-light text-zinc-400 mt-2 max-w-xs mx-auto">{brideAddress}</p>}
-          </motion.div>
+          {data.primarySide === 'groom' ? (
+            <>
+              {/* Groom Details */}
+              <motion.div variants={scrollFade} className="mb-8 md:mb-16">
+                <h1 className="font-pinyon text-7xl sm:text-6xl md:text-7xl text-amber-400 mb-4 drop-shadow-md break-words w-full px-4 leading-tight">
+                  {groomName}
+                </h1>
+                <p className="text-sm text-zinc-400 font-sans tracking-widest uppercase mb-2">S/O</p>
+                {groomFatherName && groomMotherName && <p className="text-base font-light text-zinc-200">{groomFatherName} & {groomMotherName}</p>}
+                {groomAddress && <p className="text-sm font-light text-zinc-400 mt-2 max-w-xs mx-auto">{groomAddress}</p>}
+              </motion.div>
 
-          <motion.div 
-            initial={{ scale: 0.5, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 1.5 }}
-            className="text-3xl text-amber-500 my-6 md:my-12 font-light flex items-center justify-center gap-6"
-          >
-            <span className="w-16 h-px bg-gradient-to-r from-transparent to-amber-500/50 block"></span>
-            &
-            <span className="w-16 h-px bg-gradient-to-l from-transparent to-amber-500/50 block"></span>
-          </motion.div>
+              <motion.div 
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 1.5 }}
+                className="text-3xl text-amber-500 my-6 md:my-12 font-light flex items-center justify-center gap-6"
+              >
+                <span className="w-16 h-px bg-gradient-to-r from-transparent to-amber-500/50 block"></span>
+                &
+                <span className="w-16 h-px bg-gradient-to-l from-transparent to-amber-500/50 block"></span>
+              </motion.div>
 
-          {/* Groom Details */}
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={scrollFade}
-            className="mb-8 md:mb-16"
-          >
-            <h1 className="font-pinyon text-7xl sm:text-6xl md:text-7xl text-amber-400 mb-4 drop-shadow-md break-words w-full px-4 leading-tight">
-              {groomName}
-            </h1>
-            <p className="text-sm text-zinc-400 font-sans tracking-widest uppercase mb-2">S/O</p>
-            {groomFatherName && groomMotherName && <p className="text-base font-light text-zinc-200">{groomFatherName} & {groomMotherName}</p>}
-            {groomAddress && <p className="text-sm font-light text-zinc-400 mt-2 max-w-xs mx-auto">{groomAddress}</p>}
-          </motion.div>
+              {/* Bride Details */}
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={scrollFade}
+                className="mb-8 md:mb-16"
+              >
+                <h1 className="font-pinyon text-7xl sm:text-6xl md:text-7xl text-amber-400 mb-4 drop-shadow-md break-words w-full px-4 leading-tight">
+                  {brideName}
+                </h1>
+                <p className="text-sm text-zinc-400 font-sans tracking-widest uppercase mb-2">D/O</p>
+                {brideFatherName && brideMotherName && <p className="text-base font-light text-zinc-200">{brideFatherName} & {brideMotherName}</p>}
+                {brideAddress && <p className="text-sm font-light text-zinc-400 mt-2 max-w-xs mx-auto">{brideAddress}</p>}
+              </motion.div>
+            </>
+          ) : (
+            <>
+              {/* Bride Details */}
+              <motion.div variants={scrollFade} className="mb-8 md:mb-16">
+                <h1 className="font-pinyon text-7xl sm:text-6xl md:text-7xl text-amber-400 mb-4 drop-shadow-md break-words w-full px-4 leading-tight">
+                  {brideName}
+                </h1>
+                <p className="text-sm text-zinc-400 font-sans tracking-widest uppercase mb-2">D/O</p>
+                {brideFatherName && brideMotherName && <p className="text-base font-light text-zinc-200">{brideFatherName} & {brideMotherName}</p>}
+                {brideAddress && <p className="text-sm font-light text-zinc-400 mt-2 max-w-xs mx-auto">{brideAddress}</p>}
+              </motion.div>
+
+              <motion.div 
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 1.5 }}
+                className="text-3xl text-amber-500 my-6 md:my-12 font-light flex items-center justify-center gap-6"
+              >
+                <span className="w-16 h-px bg-gradient-to-r from-transparent to-amber-500/50 block"></span>
+                &
+                <span className="w-16 h-px bg-gradient-to-l from-transparent to-amber-500/50 block"></span>
+              </motion.div>
+
+              {/* Groom Details */}
+              <motion.div 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={scrollFade}
+                className="mb-8 md:mb-16"
+              >
+                <h1 className="font-pinyon text-7xl sm:text-6xl md:text-7xl text-amber-400 mb-4 drop-shadow-md break-words w-full px-4 leading-tight">
+                  {groomName}
+                </h1>
+                <p className="text-sm text-zinc-400 font-sans tracking-widest uppercase mb-2">S/O</p>
+                {groomFatherName && groomMotherName && <p className="text-base font-light text-zinc-200">{groomFatherName} & {groomMotherName}</p>}
+                {groomAddress && <p className="text-sm font-light text-zinc-400 mt-2 max-w-xs mx-auto">{groomAddress}</p>}
+              </motion.div>
+            </>
+          )}
 
           {familyAddress && (
             <motion.p 

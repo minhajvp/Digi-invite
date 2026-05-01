@@ -91,7 +91,7 @@ export default function WeddingTemplate2({ data }: Props) {
       {/* 3D Floating Hearts */}
       <FloatingHearts count={20} colors={['#ffb3c6', '#ffcbf2', '#fde2e4', '#fad2e1']} />
 
-      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} />
+      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} primarySide={data.primarySide} />
       <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} invitationId={data._id?.toString()} />
 
       {/* Hero Section */}
@@ -125,13 +125,13 @@ export default function WeddingTemplate2({ data }: Props) {
           
           <div className="flex flex-col items-center justify-center">
             <h1 className="font-pinyon text-7xl md:text-8xl lg:text-9xl text-rose-950 font-normal tracking-tight leading-none drop-shadow-sm">
-              {brideName.split(' ')[0]}
+              {data.primarySide === 'groom' ? groomName.split(' ')[0] : brideName.split(' ')[0]}
             </h1>
             <span className="font-cinzel text-2xl md:text-3xl text-rose-800/60 my-2 italic">
               &
             </span>
             <h1 className="font-pinyon text-7xl md:text-8xl lg:text-9xl text-rose-950 font-normal tracking-tight leading-none drop-shadow-sm">
-              {groomName.split(' ')[0]}
+              {data.primarySide === 'groom' ? brideName.split(' ')[0] : groomName.split(' ')[0]}
             </h1>
           </div>
         </motion.div>
@@ -163,25 +163,49 @@ export default function WeddingTemplate2({ data }: Props) {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div>
-              <h3 className="font-pinyon text-4xl sm:text-5xl md:text-6xl text-rose-800 mb-4 break-words w-full px-2 leading-tight">{brideName}</h3>
-              {brideFatherName && brideMotherName && (
-                <p className="font-cinzel text-sm tracking-wider text-slate-500 uppercase mb-2">
-                  Daughter of<br/>{brideFatherName} & {brideMotherName}
-                </p>
-              )}
-              {brideAddress && <p className="text-sm font-cinzel text-slate-400 mt-4 leading-relaxed break-words">{brideAddress}</p>}
-            </div>
-            
-            <div>
-              <h3 className="font-pinyon text-4xl sm:text-5xl md:text-6xl text-rose-800 mb-4 break-words w-full px-2 leading-tight">{groomName}</h3>
-              {groomFatherName && groomMotherName && (
-                <p className="font-cinzel text-sm tracking-wider text-slate-500 uppercase mb-2">
-                  Son of<br/>{groomFatherName} & {groomMotherName}
-                </p>
-              )}
-              {groomAddress && <p className="text-sm font-cinzel text-slate-400 mt-4 leading-relaxed break-words">{groomAddress}</p>}
-            </div>
+            {data.primarySide === 'groom' ? (
+              <>
+                <div>
+                  <h3 className="font-pinyon text-4xl sm:text-5xl md:text-6xl text-rose-800 mb-4 break-words w-full px-2 leading-tight">{groomName}</h3>
+                  {groomFatherName && groomMotherName && (
+                    <p className="font-cinzel text-sm tracking-wider text-slate-500 uppercase mb-2">
+                      Son of<br/>{groomFatherName} & {groomMotherName}
+                    </p>
+                  )}
+                  {groomAddress && <p className="text-sm font-cinzel text-slate-400 mt-4 leading-relaxed break-words">{groomAddress}</p>}
+                </div>
+                <div>
+                  <h3 className="font-pinyon text-4xl sm:text-5xl md:text-6xl text-rose-800 mb-4 break-words w-full px-2 leading-tight">{brideName}</h3>
+                  {brideFatherName && brideMotherName && (
+                    <p className="font-cinzel text-sm tracking-wider text-slate-500 uppercase mb-2">
+                      Daughter of<br/>{brideFatherName} & {brideMotherName}
+                    </p>
+                  )}
+                  {brideAddress && <p className="text-sm font-cinzel text-slate-400 mt-4 leading-relaxed break-words">{brideAddress}</p>}
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <h3 className="font-pinyon text-4xl sm:text-5xl md:text-6xl text-rose-800 mb-4 break-words w-full px-2 leading-tight">{brideName}</h3>
+                  {brideFatherName && brideMotherName && (
+                    <p className="font-cinzel text-sm tracking-wider text-slate-500 uppercase mb-2">
+                      Daughter of<br/>{brideFatherName} & {brideMotherName}
+                    </p>
+                  )}
+                  {brideAddress && <p className="text-sm font-cinzel text-slate-400 mt-4 leading-relaxed break-words">{brideAddress}</p>}
+                </div>
+                <div>
+                  <h3 className="font-pinyon text-4xl sm:text-5xl md:text-6xl text-rose-800 mb-4 break-words w-full px-2 leading-tight">{groomName}</h3>
+                  {groomFatherName && groomMotherName && (
+                    <p className="font-cinzel text-sm tracking-wider text-slate-500 uppercase mb-2">
+                      Son of<br/>{groomFatherName} & {groomMotherName}
+                    </p>
+                  )}
+                  {groomAddress && <p className="text-sm font-cinzel text-slate-400 mt-4 leading-relaxed break-words">{groomAddress}</p>}
+                </div>
+              </>
+            )}
           </div>
           
           {familyAddress && (

@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Volume2, VolumeX, Music } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function MusicPlayer({ url, brideName, groomName }: { url?: string; brideName?: string; groomName?: string }) {
+export default function MusicPlayer({ url, brideName, groomName, primarySide }: { url?: string; brideName?: string; groomName?: string; primarySide?: 'bride' | 'groom' }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -65,7 +65,7 @@ export default function MusicPlayer({ url, brideName, groomName }: { url?: strin
                 <Music className="w-8 h-8 text-amber-400" />
               </div>
               <p className="font-pinyon text-4xl text-amber-400">
-                {brideName && groomName ? `${brideName} & ${groomName}` : 'Welcome'}
+                {brideName && groomName ? (primarySide === 'groom' ? `${groomName} & ${brideName}` : `${brideName} & ${groomName}`) : 'Welcome'}
               </p>
               <p className="font-serif text-lg tracking-wider text-amber-500/80 mt-2">A Heartfelt Welcome to Our Big Day</p>
               <p className="text-[10px] text-zinc-500 font-sans uppercase tracking-[0.3em] mt-8 animate-pulse">Tap to Open</p>

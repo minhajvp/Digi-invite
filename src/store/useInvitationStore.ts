@@ -11,6 +11,7 @@ type InvitationState = Partial<IInvitation> & {
 export const useInvitationStore = create<InvitationState>((set) => ({
   eventType: 'wedding',
   templateId: 'wedding-1', // Default template
+  primarySide: 'bride',
   eventSubHead: 'Together with their families',
   brideName: 'Meera',
   brideAddress: 'House of Joy, Kerala',
@@ -39,6 +40,7 @@ export const useInvitationStore = create<InvitationState>((set) => ({
   resetStore: () => set({
     eventType: 'wedding',
     templateId: 'wedding-1',
+    primarySide: 'bride',
     eventSubHead: 'Together with their families',
     brideName: 'Meera',
     brideAddress: 'House of Joy, Kerala',

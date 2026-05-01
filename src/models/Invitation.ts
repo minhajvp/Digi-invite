@@ -6,6 +6,7 @@ export interface IInvitation extends Document {
   templateId: string;
   musicUrl?: string;
   coverImage?: string;
+  primarySide?: 'bride' | 'groom';
   
   // Wedding Fields
   eventSubHead?: string;
@@ -44,6 +45,7 @@ const InvitationSchema: Schema = new Schema(
     templateId: { type: String, required: true },
     musicUrl: { type: String },
     coverImage: { type: String },
+    primarySide: { type: String, enum: ['bride', 'groom'], default: 'bride' },
 
     // Wedding Fields
     eventSubHead: { type: String },

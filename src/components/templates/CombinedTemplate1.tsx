@@ -85,7 +85,7 @@ export default function CombinedTemplate1({ data }: Props) {
       
       <FloatingHearts count={15} colors={['#7c3aed', '#db2777', '#fbbf24']} />
       
-      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} />
+      <MusicPlayer url={musicUrl || "/wedding_nasheed.mp3"} brideName={brideName} groomName={groomName} primarySide={data.primarySide} />
       <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} invitationId={data._id?.toString()} />
 
       {/* Hero Section */}
@@ -106,7 +106,7 @@ export default function CombinedTemplate1({ data }: Props) {
           </div>
           <p className="text-amber-400 uppercase tracking-[0.5em] text-[10px] mb-8 font-bold">A Double Celebration</p>
           <h1 className="text-5xl md:text-8xl font-serif text-white mb-6 italic leading-tight">
-             {brideName} & {groomName}
+             {data.primarySide === 'groom' ? `${groomName} & ${brideName}` : `${brideName} & ${groomName}`}
           </h1>
           <div className="w-24 h-[1px] bg-amber-500/50 mx-auto mb-6" />
           <h2 className="text-2xl md:text-4xl font-serif text-amber-200 italic">
